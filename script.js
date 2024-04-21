@@ -1,4 +1,69 @@
 
+document.getElementById("orderNowBtn").addEventListener("click", function() {
+    document.getElementById("addressAndConfirmationPage").style.display = "block";
+});
+
+document.getElementById("placeOrderBtn").addEventListener("click", function() {
+    // Get form data
+    var formData = new FormData(document.getElementById("address-and-order-form"));
+    var fullName = formData.get("fullname");
+    var address = formData.get("address");
+    var phone = formData.get("phone");
+
+    // Generate order ID based on user details
+    var orderId = generateOrderId(fullName, address, phone);
+    var deliveryDate = calculateDeliveryDate(); // You can implement this function to calculate the delivery date
+
+    // Get payment status based on final order click
+    var paymentStatus = document.getElementById("finalOrderBtn").clicked ? "Yes" : "No"; 
+
+    // Display order confirmation in the table
+    displayOrderConfirmation(orderId, deliveryDate, paymentStatus);
+
+    // Reset form
+    document.getElementById("address-and-order-form").reset();
+
+    // Show order confirmation table
+    document.getElementById("orderConfirmation").style.display = "block";
+    
+    // Show payment page
+    document.getElementById("paymentPage").style.display = "block";
+
+    // Hide address and confirmation page
+    document.getElementById("addressAndConfirmationPage").style.display = "none";
+});
+
+// Function to generate order ID
+function generateOrderId(fullName, address, phone) {
+    // Extracting the first name (before the space)
+    var firstName = fullName.split(' ')[0];
+
+    // Extracting the last four digits of the phone number
+    var lastFourDigits = phone.slice(-4);
+
+    // Combining first name and last four digits of phone number
+    var orderId = firstName + lastFourDigits;
+
+    return orderId;
+}
+
+// Function to display order confirmation in the table
+function displayOrderConfirmation(orderId, deliveryDate, paymentStatus) {
+    var tableBody = document.getElementById("orderConfirmationBody");
+    var newRow = tableBody.insertRow();
+
+    var userIdCell = newRow.insertCell(0);
+    userIdCell.textContent = orderId;
+
+    var deliveredDateCell = newRow.insertCell(1);
+    deliveredDateCell.textContent = deliveryDate;
+
+    var paymentStatusCell = newRow.insertCell(2);
+    paymentStatusCell.textContent = paymentStatus;
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const productsContainer = document.getElementById('products-container');
     const cartLink = document.getElementById('cart-link');
@@ -56,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Dynamically generate options for quantity dropdown
         const quantityDropdown = productElement.querySelector('.quantity-dropdown');
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 20; i <= 100; i++) {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
@@ -95,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         addRemoveItemListeners();
     }
 
-    // Update the user orders table
+    // Update the user cart table in fix button
     function updateOrderItems() {
         orderItems.innerHTML = '';
         cartContents.forEach(item => {
@@ -105,11 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${item.name}</td>
                 <td>$${item.price}</td>
                 <td>${item.quantity}</td>
-                <td>$${(item.price * item.quantity).toFixed(2)}</td>
-                <td><button class="remove-item" data-id="${item.id}">Remove</button></td>
+                <td>$${(item.price * item.quantity).toFixed(2)}</td>     
             `;
-            orderItems.appendChild(row);
-            
+            orderItems.appendChild(row); 
         });
     }
 
@@ -285,7 +348,7 @@ function uploadScreenshot() {
 
  // Start the timer when the page loads
  document.addEventListener("DOMContentLoaded", function() {
-    startTimer(2 * 60); // Start a 2-minute timer
+    startTimer(3 * 60); // Start a 2-minute timer
 });
 
 // Function to start the timer
@@ -328,8 +391,6 @@ function openSection(sectionId) {
 }
 
 
-
-
 // Order Now Button Click Event
 document.getElementById("orderNowBtn").addEventListener("click", function() {
     document.getElementById("addressAndConfirmationPage").style.display = "block";
@@ -355,8 +416,11 @@ function showCongratsModalAndClosePage() {
     setTimeout(function() {
         congratsModal.style.display = "none";
         window.close(); // Close the payment page
-    }, 3000);
+    }, 10000);
 }
+
+
+
 
 // Final Order Button Click Event
 document.getElementById("finalOrderBtn").addEventListener("click", function() {
@@ -364,6 +428,24 @@ document.getElementById("finalOrderBtn").addEventListener("click", function() {
     // For now, let's just show the congratulations modal and close the payment page
     showCongratsModalAndClosePage();
 });
+
+//Final Order function 
+document.addEventListener("DOMContentLoaded", function() {
+    var finalOrderBtn = document.getElementById("finalOrderBtn");
+
+    if (finalOrderBtn) {
+        finalOrderBtn.addEventListener("click", function() {
+            // ऑर्डर सफलतापूर्वक हो गया है, तो इसे पुष्टि करें
+            var confirmation = confirm("आपका ऑर्डर सफलतापूर्वक हो गया है! क्या आप अपने आदेश का स्थिति पेज पर जाना चाहते हैं?");
+
+            // अगर पुष्टि किया जाता है, तो उपयोगकर्ता को स्थिति पेज पर रीडायरेक्ट करें
+            if (confirmation) {
+                document.getElementById("order-section").style.display = "block";
+            }
+        });
+    }
+});
+
 
 // Payment Page Form Submit Event
 document.querySelector("#address-and-order-form").addEventListener("submit", function(event) {
@@ -376,9 +458,38 @@ document.querySelector("#address-and-order-form").addEventListener("submit", fun
 
 
 
+//ruff code
+    
+// Function to create product element
+function createProductElement(product) {
+    const productElement = document.createElement('div');
+    productElement.classList.add('product');
+    productElement.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <div class="product-details">
+            <h3>${product.name}</h3>
+            <p>Price: $${product.price}</p>
+            <p>Offer: ${product.offer}</p>
+            <button onclick="addToCart('${product.name}', ${product.price}, 'userId')">Add to Cart</button>
+        </div>
+    `;
+    return productElement;
+}
 
 
 
+
+
+//JavaScript code to display products
+document.addEventListener('DOMContentLoaded', function() {
+    const productsContainer = document.getElementById('products-container');
+
+    // Display products
+    products.forEach(product => {
+        const productElement = createProductElement(product);
+        productsContainer.appendChild(productElement);
+    });
+});
 
 
     // Dynamically generate options for quantity dropdown 
@@ -406,43 +517,95 @@ document.querySelector("#address-and-order-form").addEventListener("submit", fun
         `;
     }
    
-    
-    
 
 
 
 
-   // JavaScript code for adding product to cart
-   function addToCart(productName, price) {
-    var orderItems = document.getElementById("orderItems");
-    var selectedQuantity = parseInt(document.querySelector('.quantity-dropdown').value);
-    var total = price * selectedQuantity;
-    var deliveryDate = calculateDeliveryDate();
 
-    var newRow = orderItems.insertRow();
-    newRow.innerHTML = `
-        <td><img src="${productName.toLowerCase().replace(' ', '')}.jpg" alt="${productName}" class="product-img"></td>
-        <td id="payment-status-${productName.replace(' ', '')}">No</td>
-        <td id="order-delivered-${productName.replace(' ', '')}"></td>
-        <td>${deliveryDate}</td>
-    `;
 
-    // Update total in cart
-    var cartTotal = parseFloat(document.getElementById("cart-total").innerText);
-    document.getElementById("cart-total").innerText = (cartTotal + total).toFixed(2);
+
+
+    // JavaScript code for adding product to cart and creating order table
+    function addToCart(productName, price, userId) {
+        var orderItems = document.getElementById("orderItems").querySelector("tbody");
+        var selectedQuantity = parseInt(document.querySelector('.quantity-dropdown').value);
+        var total = price * selectedQuantity;
+        var deliveryDate = calculateDeliveryDate();
+
+        // Create a unique order id using user's name/number and last 4 digits of userId
+        var orderId = generateOrderId(userId);
+
+        // Insert a new row in the orderItems table
+        var newRow = orderItems.insertRow();
+        newRow.innerHTML = `
+            <td><img src="${productName.toLowerCase().replace(' ', '')}.jpg" alt="${productName}" class="product-img"></td>
+            <td id="payment-status-${orderId}">No</td>
+            <td id="order-delivered-${orderId}">${deliveryDate}</td>
+            <td>${orderId}</td>
+        `;
+
+        // Update total in cart
+        var cartTotal = parseFloat(document.getElementById("cart-total").innerText);
+        document.getElementById("cart-total").innerText = (cartTotal + total).toFixed(2);
+    }
+
+    // JavaScript function to calculate delivery date (7 days from today)
+    function calculateDeliveryDate() {
+        var currentDate = new Date();
+        var deliveryDate = new Date(currentDate);
+        deliveryDate.setDate(deliveryDate.getDate() + 7); // Add 7 days
+        var deliveryDateString = deliveryDate.toDateString(); // Convert to string
+        return deliveryDateString;
+    }
+
+    // JavaScript function to generate unique order id
+    function generateOrderId(userId) {
+        // Assuming userId is a string containing user's name/number
+        // and last 4 digits of userId
+        var last4Digits = userId.slice(-4);
+        var orderId = "ORDER-" + last4Digits + "-" + generateRandomNumber();
+        return orderId;
+    }
+
+    // JavaScript function to generate random number for order id
+    function generateRandomNumber() {
+        return Math.floor(1000 + Math.random() * 9000); // Generates a 4-digit random number
+    }
+
+
+
+// Sample product data
+var products = [
+    { name: 'Product 1', price: 10 },
+    { name: 'Product 2', price: 15 },
+    { name: 'Product 3', price: 20 }
+];
+
+// Function to dynamically add products to the container
+function addProductsToContainer() {
+    var container = document.getElementById("products-container");
+
+    products.forEach(function(product) {
+        var productDiv = document.createElement("div");
+        productDiv.classList.add("product");
+
+        // Construct product HTML
+        productDiv.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>Price: $${product.price}</p>
+            <button onclick="addToCart('${product.name}', ${product.price}, 'User123')">Add to Cart</button>
+        `;
+
+        // Append product div to container
+        container.appendChild(productDiv);
+    });
 }
 
-// JavaScript code to update payment status
-function updatePaymentStatus(productName) {
-    var paymentStatusCell = document.getElementById(`payment-status-${productName.replace(' ', '')}`);
-    paymentStatusCell.textContent = "Yes";
-}
+// Call the function to add products to the container
+addProductsToContainer();
 
-// JavaScript function to calculate delivery date (7 days from today)
-function calculateDeliveryDate() {
-    var currentDate = new Date();
-    var deliveryDate = new Date(currentDate);
-    deliveryDate.setDate(deliveryDate.getDate() + 7); // Add 7 days
-    var deliveryDateString = deliveryDate.toDateString(); // Convert to string
-    return deliveryDateString;
-}
+
+
+
+
+       
