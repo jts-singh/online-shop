@@ -62,6 +62,7 @@
     </form>
 </div>
 
+
 <!-- Payment Page Container -->
 <div class="container" id="paymentPage" style="display: none;">
     <h2>Payment Page</h2>
@@ -123,7 +124,22 @@
         <span class="close" onclick="closeCongratsModal()">&times;</span>
         <h1>Congratulations!</1>
           <img src="https://th.bing.com/th?id=OIP.dreN8fvKB-9qgBBdwDpTrQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="'बधाई हो'">
-        <p>धन्यवाद</p>
+          <h2>Order Confirmation</h2>
+          <table id="orderConfirmationTable">
+              <thead>
+                  <tr>
+                      <th>User ID</th>
+                      <th>Delivered Date</th>
+                      <th>Payment Status</th>
+                  </tr>
+              </thead>
+              <tbody id="orderConfirmationBody">
+                  <!-- Order confirmation details will be added here dynamically -->
+              </tbody>
+          </table>
+      </div>
+                </div>
+              </div>
     </div>
 </div>
 
@@ -148,71 +164,13 @@
 <i class="fa-solid fa-bag-shopping">-PRODUCTS</i>
 
 <!--product open container-->
-<div class=" container-OPEN">
+<div class="container-OPEN">
     <div class="products-container" id="products-container">
-        
-    </div>
-    
+        <!-- Products will be dynamically added here -->
+    </div> 
 </div>
 
 
-<!-- Product Container -->
-<div class="products-container" id="products-container">
-    <!-- Existing Products -->
-</div>
-
-<!-- Order items table -->
-<table id="orderItems">
-    <!-- Table structure remains the same -->
-</table>
-
-<!-- Include necessary JavaScript code -->
-<script>
-    // JavaScript code to add a new product
-    function addNewProduct(product) {
-        const productsContainer = document.getElementById('products-container');
-
-        // Create product element
-        const productElement = document.createElement('div');
-        productElement.classList.add('product');
-        productElement.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <div class="product-details">
-                <h3>${product.name}</h3>
-                <p>Price: $${product.price}</p>
-                <p>Offer: ${product.offer}</p>
-                <p>${product.paragraph}</p>
-                <select class="quantity-dropdown">
-                    <!-- Options will be added dynamically -->
-                </select>
-                <button class="buy-btn" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-        `;
-
-        // Dynamically generate options for quantity dropdown
-        const quantityDropdown = productElement.querySelector('.quantity-dropdown');
-        for (let i = 1; i <= 10; i++) {
-            const option = document.createElement('option');
-            option.value = i;
-            option.textContent = i;
-            quantityDropdown.appendChild(option);
-        }
-
-        productsContainer.appendChild(productElement);
-    }
-
-    // Example of adding a new product
-    const newProduct = {
-        name: 'New Product',
-        price: 99.99,
-        image: 'path/to/image.jpg',
-        offer: '20% off',
-        paragraph: 'Product description goes here'
-    };
-
-    // Call the function to add the new product
-    addNewProduct(newProduct);
-</script>
 
 
 
@@ -239,101 +197,78 @@
   </div>
   
   <div id="cart-section" class="section">
-     
-  
       <div class="container">
-          <h2>User Orders</h2>
-          <table>
-              <thead>
-                  <tr>
-                      <th>Product Image</th>
-                      <th>Product Name</th>
-                      <th>Price</th>
-                      <th>Quantity</th>
-                      <th>Total Price</th>
-                      <th>Actions</th>
-                  </tr>
-              </thead>
-              <tbody id="orderItems">
-                  <!-- Order items will be dynamically added here -->
-              </tbody>
-          </table>
+        <h2>Your Cart</h2>
+        <table>
+          <thead>
+              <tr>
+                  <th>Product Image</th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total Price</th>
+               
+              </tr>
+          </thead>
+          <tbody id="orderItems">
+              <!-- Order items will be dynamically added here -->
+          </tbody>
+      </table>
       </div>
-      
-      
-      
        </div>
       
        <div id="order-section" class="section">
-   
         <div class="content"> <h2>My Order</h2>
-          <div class="order-item">
-              
-            <div class="container">
-              <h2>User Orders</h2>
-              <h3>Current Order</h3>
-              <table>
-                  <thead>
-                      <tr>
-                          <th>Product Image</th>
-                          <th>Product Name</th>
-                          <th>Price</th>
-                          <th>Quantity</th>
-                          <th>Total Price</th>
-                          <th>Status</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody id="orderItems">
-                      <!-- Order items will be dynamically added here -->
-                  </tbody>
-              </table>
-          
-              <h3>Order History</h3>
-              <table>
-                  <thead>
-                      <tr>
-                          <th>Order ID</th>
-                          <th>Products</th>
-                          <th>Total Price</th>
-                          <th>Status</th>
-                      </tr>
-                  </thead>
-                  <tbody id="orderHistory">
-                      <!-- Order history will be dynamically added here -->
-                  </tbody>
-              </table>
+           
+<!-- Order Confirmation Table -->
+<div class="container" id="orderConfirmation" style="display: none;">
+    <h2>Order Confirmation</h2>
+    <table id="orderConfirmationTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Delivered Date</th>
+                <th>Payment Status</th>
+            </tr>
+        </thead>
+        <tbody id="orderConfirmationBody">
+            <!-- Order confirmation details will be added here dynamically -->
+        </tbody>
+    </table>
+</div>
           </div>
-          
-          </div></div>
-      </div>
-  <div id="profile-section" class="section">
-    <div class="content">
-        <h2>Create your profile</h2>
-        <form id="biodata-form">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+        </div>
+      
+
+
+
+        <div id="profile-section" class="section">
+            <div class="content">
+                <h2>Create your profile</h2>
+                <form id="biodata-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                        <small>Format: 1234567890</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Submit</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
-                <small>Format: 1234567890</small>
-            </div>
-            <div class="form-group">
-                <label for="address">Address:</label>
-                <textarea id="address" name="address" required></textarea>
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-    </div>
-  </div>
+          </div>
   
   
   
@@ -400,21 +335,6 @@
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Form</title>
-</head>
-<body>
-
-<!-- Include necessary JavaScript code -->
-<script>
- 
-</script>
-</body>
-</html>
 
 
 
@@ -422,4 +342,3 @@
 
 
 
-<!--new desin type website-->
