@@ -11,7 +11,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", function() {
     var phone = formData.get("phone");
 
     // Generate order ID based on user details
-    var orderId = generateOrderId(fullName, address, phone);
+    var orderId = generateOrderId(fullName, phone);
     var deliveryDate = calculateDeliveryDate(); // You can implement this function to calculate the delivery date
 
     // Get payment status based on final order click
@@ -33,19 +33,6 @@ document.getElementById("placeOrderBtn").addEventListener("click", function() {
     document.getElementById("addressAndConfirmationPage").style.display = "none";
 });
 
-// Function to generate order ID
-function generateOrderId(fullName, address, phone) {
-    // Extracting the first name (before the space)
-    var firstName = fullName.split(' ')[0];
-
-    // Extracting the last four digits of the phone number
-    var lastFourDigits = phone.slice(-4);
-
-    // Combining first name and last four digits of phone number
-    var orderId = firstName + lastFourDigits;
-
-    return orderId;
-}
 
 // Function to display order confirmation in the table
 function displayOrderConfirmation(orderId, deliveryDate, paymentStatus) {
@@ -82,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 4, name: 'GARS Gear Oil', price: 200.99, image: 'https://www.garslubricants.com/Product/1601352400ATF.jpg', offer: '10% off' },
         { id: 5, name: 'GARS BOLT 15-W-40 API CH4', price: 200.99, image: 'https://www.garslubricants.com/Product/1584509101bolt%20img%203.jpg', offer: '15% off' },
         { id: 6, name: 'GARS Brake Oil', price: 300.99, image: 'https://www.garslubricants.com/Product/1584700300break.jpg', offer: '20% off' },
+        
         { id: 7, name: ' GARS COOLANT OIL', price: 300.99, image: 'https://www.garslubricants.com/cat_img/1584003994.jpg', offer: '10% off' },
         { id: 8, name: 'GARS Hydraulic 68', price: 200.99, image: 'https://www.garslubricants.com/cat_img/1584003968.jpg', offer: '15% off' },
         { id: 9, name: 'Nitco Bike care 20W‐40', price: 300.99, image: 'https://nitcopetrolube.com/wp-content/uploads/2023/02/2.jpg', offer: '20% off' },
@@ -94,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 12, name: 'Nitco', price: 300.99, image: '', offer: '20% off' },
         // Add more products here
     ];
+    
 
     // Display products
     products.forEach(product => {
@@ -418,6 +407,21 @@ function showCongratsModalAndClosePage() {
         window.close(); // Close the payment page
     }, 10000);
 }
+// Function to show the Congratulations Modal and open the "My Orders" page
+function showCongratsModalAndOpenMyOrdersPage() {
+    var congratsModal = document.getElementById("congratsModal");
+    congratsModal.style.display = "block";
+    setTimeout(function() {
+        congratsModal.style.display = "none";
+        // Open "My Orders" page
+        window.location.href = "my_orders.html"; // Replace "my_orders.html" with the actual URL of your "My Orders" page
+    }, 10000);
+}
+
+// JavaScript to display delivered date in the Congratulations Modal
+var deliveryDate = "2024-04-22"; // Replace this with your actual delivery date
+
+document.getElementById("deliveredDateDisplay").textContent += deliveryDate;
 
 
 
@@ -456,6 +460,19 @@ document.querySelector("#address-and-order-form").addEventListener("submit", fun
 
 
 
+// JavaScript function to generate unique order id
+function generateOrderId(userName, phoneNumber) {
+    // Assuming userName and phoneNumber are strings
+    var userId = userName + "-" + phoneNumber; // Combine userName and phoneNumber to form userId
+    var orderId = userName.toUpperCase() + "-" + phoneNumber; // Generate orderId using userName and phoneNumber
+    return orderId;
+}
+
+// Example usage:
+var userName = "JohnDoe";
+var phoneNumber = "1234567890";
+var orderId = generateOrderId(userName, phoneNumber);
+console.log(orderId);
 
 
 //ruff code
@@ -558,54 +575,5 @@ document.addEventListener('DOMContentLoaded', function() {
         return deliveryDateString;
     }
 
-    // JavaScript function to generate unique order id
-    function generateOrderId(userId) {
-        // Assuming userId is a string containing user's name/number
-        // and last 4 digits of userId
-        var last4Digits = userId.slice(-4);
-        var orderId = "ORDER-" + last4Digits + "-" + generateRandomNumber();
-        return orderId;
-    }
-
-    // JavaScript function to generate random number for order id
-    function generateRandomNumber() {
-        return Math.floor(1000 + Math.random() * 9000); // Generates a 4-digit random number
-    }
 
 
-
-// Sample product data
-var products = [
-    { name: 'Product 1', price: 10 },
-    { name: 'Product 2', price: 15 },
-    { name: 'Product 3', price: 20 }
-];
-
-// Function to dynamically add products to the container
-function addProductsToContainer() {
-    var container = document.getElementById("products-container");
-
-    products.forEach(function(product) {
-        var productDiv = document.createElement("div");
-        productDiv.classList.add("product");
-
-        // Construct product HTML
-        productDiv.innerHTML = `
-            <h3>${product.name}</h3>
-            <p>Price: $${product.price}</p>
-            <button onclick="addToCart('${product.name}', ${product.price}, 'User123')">Add to Cart</button>
-        `;
-
-        // Append product div to container
-        container.appendChild(productDiv);
-    });
-}
-
-// Call the function to add products to the container
-addProductsToContainer();
-
-
-
-
-
-       
