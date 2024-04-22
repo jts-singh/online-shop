@@ -47,11 +47,11 @@
         <label for="fullname">Full Name:</label><br>
         <input type="text" id="fullname" name="fullname" required><br><br>
 
-        <label for="address">Address:</label><br>
-        <textarea id="address" name="address" required></textarea><br><br>
-
         <label for="phone">Phone:</label><br>
         <input type="tel" id="phone" name="phone" required><br><br>
+
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" required></textarea><br><br>
 
         <label for="confirm-order">
             <input type="checkbox" id="confirm-order" name="confirm-order" required>
@@ -117,36 +117,41 @@
       <!---->
    
 </div>
-
 <!-- Congratulations Modal -->
 <div id="congratsModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeCongratsModal()">&times;</span>
-        <h1>Congratulations!</1>
-          <img src="https://th.bing.com/th?id=OIP.dreN8fvKB-9qgBBdwDpTrQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="'बधाई हो'">
-          <h2>Order Check  on clik order button</h2>
-          
+        <h1>Congratulations!</h1>
+        <img src="https://th.bing.com/th?id=OIP.dreN8fvKB-9qgBBdwDpTrQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="'बधाई हो'">
+        <h2 id="deliveredDateDisplay">Delivered Date: </h2>
     </div>
 </div>
 
 
 
-     <!--category-->
-     <button onclick="toggleCategoryDropdown()">Category</button>
 
-     <div id="categoryDropdown" class="category-dropdown">
-         <!-- Category dropdown content goes here -->
-         <select>
-             <option value="">Select Category</option>
-             <option value="lubricants">gars</option>
-             <option value="lubricants">nitco</option>
-             <option value="lubricants">woltec</option>
-             <option value="lubricants">airlube</option>
-             <option value="lubricants">signature</option>
-             <option value="lubricants">other</option>
-             <!-- Add more categories as needed -->
-         </select>
-     </div>
+   
+<!--category-->
+<button onclick="toggleCategoryDropdown()">Category</button>
+
+<div id="categoryDropdown" class="category-dropdown">
+    <!-- Category dropdown content goes here -->
+    <select id="categorySelect" onchange="filterProducts()">
+        <option value="">Select Category</option>
+        <option value="GARS">GARS</option>
+        <option value="Nitco">Nitco</option>
+        <option value="Woltec">Woltec</option>
+        <option value="Airlube">Airlube</option>
+        <option value="Signature">Signature</option>
+        <option value="Other">Other</option>
+        <!-- Add more categories as needed -->
+    </select>
+</div>
+
+<div id="products-container">
+    <!-- Products will be displayed here -->
+</div>
+
 <i class="fa-solid fa-bag-shopping">-PRODUCTS</i>
 
 <!--product open container-->
@@ -227,11 +232,10 @@
       
 
 
-
         <div id="profile-section" class="section">
             <div class="content">
                 <h2>Create your profile</h2>
-                <form id="biodata-form">
+                <form id="biodata-form" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" required>
@@ -250,13 +254,60 @@
                         <textarea id="address" name="address" required></textarea>
                     </div>
                     <div class="form-group">
+                        <label for="photo">Photo:</label>
+                        <input type="file" id="photo" name="photo">
+                    </div>
+                    <div class="form-group">
                         <button type="submit">Submit</button>
                     </div>
                 </form>
             </div>
-          </div>
-  
-  
+        </div>
+        
+        <div id="profile-container" class="section" style="display: none;">
+            <div class="profile-container">
+                <img id="profile-photo" class="profile-photo" src="" alt="User Photo">
+                <div id="profile-name" class="profile-name"></div>
+                <button id="edit-button" class="edit-button">Edit</button>
+            </div>
+            
+<script>
+    var profileContainer = document.getElementById('profile-container');
+    var biodataForm = document.getElementById('biodata-form');
+    var profilePhoto = document.getElementById('profile-photo');
+    var profileName = document.getElementById('profile-name');
+    var profileAddress = document.getElementById('profile-address');
+    var editButton = document.getElementById('edit-button');
+
+    biodataForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get form data
+        var formData = new FormData(this);
+
+        // Display profile
+        profileContainer.style.display = 'block';
+        profilePhoto.src = URL.createObjectURL(formData.get('photo'));
+        profileName.textContent = formData.get('name');
+        profileAddress.textContent = formData.get('address');
+    });
+
+    editButton.addEventListener('click', function() {
+        profileContainer.style.display = 'none'; // Hide profile container
+
+        // Prefill form with existing data
+        document.getElementById('name').value = profileName.textContent;
+        document.getElementById('address').value = profileAddress.textContent;
+
+        // Reset file input (since you can't prefill it for security reasons)
+        document.getElementById('photo').value = "";
+
+        // Scroll to top of page
+        window.scrollTo(0, 0);
+    });
+</script>
+        </div>
+        
   
 
 <hr>
@@ -328,3 +379,4 @@
 
 
 
+<!--new desin type website-->
